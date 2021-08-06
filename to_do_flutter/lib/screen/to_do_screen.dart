@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:to_do_flutter/model/to_do.dart';
+import 'package:to_do_flutter/repository/to_do_repository.dart';
 
 class ToDoScreen extends StatefulWidget {
   const ToDoScreen({Key? key}) : super(key: key);
@@ -9,7 +10,7 @@ class ToDoScreen extends StatefulWidget {
 }
 
 class _ToDoScreenState extends State<ToDoScreen> {
-  List<ToDo> todos = <ToDo>[];
+  ToDoRepository _toDoRepository = new ToDoRepository();
   TextEditingController todoName = new TextEditingController();
   TextEditingController todoNumber = new TextEditingController();
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
@@ -58,8 +59,10 @@ class _ToDoScreenState extends State<ToDoScreen> {
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             setState(() {
-                              todos.add(new ToDo(todos.length + 1,
-                                  todoName.text, todoNumber.text));
+                              _toDoRepository.addToDo(new ToDo(
+                                  _toDoRepository.getListToDo().length + 1,
+                                  todoName.text,
+                                  todoNumber.text));
                             });
                           }
                         },
@@ -71,7 +74,7 @@ class _ToDoScreenState extends State<ToDoScreen> {
               margin: EdgeInsets.fromLTRB(20, 30, 20, 0),
               child: Scrollbar(
                   child: ListView.builder(
-                      itemCount: todos.length,
+                      itemCount: _toDoRepository.getListToDo().length,
                       itemBuilder: (context, index) {
                         return Column(
                           children: [
@@ -88,13 +91,18 @@ class _ToDoScreenState extends State<ToDoScreen> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       children: [
-                                        Text("Name : ${todos[index].name},"),
-                                        Text("Number : ${todos[index].number}")
+                                        Text(
+                                            "Name : ${_toDoRepository.getListToDo()[index].name},"),
+                                        Text(
+                                            "Number : ${_toDoRepository.getListToDo()[index].number}")
                                       ]),
                                   ElevatedButton(
                                       onPressed: () {
                                         setState(() {
-                                          todos.remove(todos[index]);
+                                          _toDoRepository.deleteToDO(
+                                              _toDoRepository
+                                                  .getListToDo()[index]
+                                                  .id);
                                         });
                                       },
                                       child:
