@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:to_do_flutter/model/to_do.dart';
 
 class ToDoScreen extends StatefulWidget {
   const ToDoScreen({Key? key}) : super(key: key);
@@ -8,7 +9,7 @@ class ToDoScreen extends StatefulWidget {
 }
 
 class _ToDoScreenState extends State<ToDoScreen> {
-  List todos = [];
+  List<ToDo> todos = <ToDo>[];
   TextEditingController todoName = new TextEditingController();
   TextEditingController todoNumber = new TextEditingController();
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
@@ -57,7 +58,8 @@ class _ToDoScreenState extends State<ToDoScreen> {
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             setState(() {
-                              todos.add([todoName.text, todoNumber.text]);
+                              todos.add(new ToDo(todos.length + 1,
+                                  todoName.text, todoNumber.text));
                             });
                           }
                         },
@@ -74,31 +76,35 @@ class _ToDoScreenState extends State<ToDoScreen> {
                         return Column(
                           children: [
                             ListTile(
-                                leading: Icon(
-                                  Icons.account_box,
-                                  size: 40,
-                                ),
-                                title: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Text("Name : ${todos[index][0]},"),
-                                          Text("Number : ${todos[index][1]}")
-                                        ]),
-                                    ElevatedButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            todos.remove(todos[index]);
-                                          });
-                                        },
-                                        child: Icon(Icons.delete_forever,
-                                            size: 25))
-                                  ],
-                                ))
+                              leading: Icon(
+                                Icons.account_box,
+                                size: 40,
+                              ),
+                              title: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Text("Name : ${todos[index].name},"),
+                                        Text("Number : ${todos[index].number}")
+                                      ]),
+                                  ElevatedButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          todos.remove(todos[index]);
+                                        });
+                                      },
+                                      child:
+                                          Icon(Icons.delete_forever, size: 25))
+                                ],
+                              ),
+                              onTap: () {
+                                Navigator.pushNamed(context, '/detail');
+                              },
+                            ),
                           ],
                         );
                       })),

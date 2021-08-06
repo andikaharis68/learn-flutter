@@ -1,7 +1,7 @@
-class Todo {
+class ToDo {
   int id;
-  String todo;
-  String description;
+  String name;
+  String number;
 
-  Todo(this.id, this.todo, this.description);
+  ToDo(this.id, this.name, this.number);
 }

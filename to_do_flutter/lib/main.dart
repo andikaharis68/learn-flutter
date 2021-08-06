@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:to_do_flutter/screen/to_do_detail.dart';
 import 'package:to_do_flutter/screen/to_do_screen.dart';
 
 void main() {
@@ -14,7 +15,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: ToDoScreen(),
+      routes: {
+        '/': (context) => ToDoScreen(),
+        '/detail': (context) => ToDoDetailScreen()
+      },
     );
   }
 }
