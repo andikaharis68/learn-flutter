@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:to_do_flutter/model/to_do.dart';
 import 'package:to_do_flutter/repository/to_do_repository.dart';
+import 'package:to_do_flutter/screen/to_do_detail.dart';
 
 class ToDoScreen extends StatefulWidget {
   const ToDoScreen({Key? key}) : super(key: key);
@@ -60,7 +61,7 @@ class _ToDoScreenState extends State<ToDoScreen> {
                           if (_formKey.currentState!.validate()) {
                             setState(() {
                               _toDoRepository.addToDo(new ToDo(
-                                  _toDoRepository.getListToDo().length + 1,
+                                  _toDoRepository.getAllToDo().length + 1,
                                   todoName.text,
                                   todoNumber.text));
                             });
@@ -74,7 +75,7 @@ class _ToDoScreenState extends State<ToDoScreen> {
               margin: EdgeInsets.fromLTRB(20, 30, 20, 0),
               child: Scrollbar(
                   child: ListView.builder(
-                      itemCount: _toDoRepository.getListToDo().length,
+                      itemCount: _toDoRepository.getAllToDo().length,
                       itemBuilder: (context, index) {
                         return Column(
                           children: [
@@ -92,16 +93,14 @@ class _ToDoScreenState extends State<ToDoScreen> {
                                           MainAxisAlignment.start,
                                       children: [
                                         Text(
-                                            "Name : ${_toDoRepository.getListToDo()[index].name},"),
-                                        Text(
-                                            "Number : ${_toDoRepository.getListToDo()[index].number}")
+                                            "Name : ${_toDoRepository.getAllToDo()[index].name},"),
                                       ]),
                                   ElevatedButton(
                                       onPressed: () {
                                         setState(() {
                                           _toDoRepository.deleteToDO(
                                               _toDoRepository
-                                                  .getListToDo()[index]
+                                                  .getAllToDo()[index]
                                                   .id);
                                         });
                                       },
@@ -110,13 +109,20 @@ class _ToDoScreenState extends State<ToDoScreen> {
                                 ],
                               ),
                               onTap: () {
-                                Navigator.pushNamed(context, '/detail');
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ToDoDetailScreen(
+                                        todo: _toDoRepository
+                                            .getAllToDo()[index]),
+                                  ),
+                                );
                               },
                             ),
                           ],
                         );
                       })),
-            ))
+            )),
           ],
         ),
       ),

@@ -3,7 +3,7 @@ import 'package:to_do_flutter/model/to_do.dart';
 class ToDoRepository {
   List<ToDo> todos = <ToDo>[];
 
-  List<ToDo> getListToDo() {
+  List<ToDo> getAllToDo() {
     return todos;
   }
 
